@@ -1,0 +1,4 @@
+﻿<ViewExtensionDefinition>
+  <AssemblyPath>..\bin\GitHubForDynamo.dll</AssemblyPath>
+  <TypeName>GitHubForDynamo.GitHubViewExtension</TypeName>
+</ViewExtensionDefinition>

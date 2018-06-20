@@ -1,0 +1,21 @@
+{
+  "contains_binaries": true,
+  "contents": "",
+  "dependencies": [],
+  "description": "",
+  "engine": "dynamo",
+  "engine_metadata": "",
+  "engine_version": "2.0.1.4955",
+  "file_hash": null,
+  "group": "",
+  "keywords": [],
+  "license": "MIT",
+  "name": "GitHub for Dynamo",
+  "node_libraries": [
+    "GitHubForDynamo, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "GitHubForDynamoWPF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+  ],
+  "repository_url": "",
+  "site_url": "",
+  "version": "0.0.1"
+}
