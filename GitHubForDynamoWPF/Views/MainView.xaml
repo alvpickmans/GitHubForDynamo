@@ -1,0 +1,101 @@
+﻿<mah:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:GitHubForDynamoWPF"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:local1="clr-namespace:GitHubForDynamoWPF.Views"
+        x:Class="GitHubForDynamoWPF.Views.MainView"
+        mc:Ignorable="d"
+        IconScalingMode="ScaleDownLargerFrame"
+        Title="GitHub for Dynamo" Height="500" Width="800" MinHeight="500" MinWidth="800" Icon="/GitHubForDynamoWPF;component/Resources/Images/GitHub-Mark-Light-32px-Margin.png">
+    <mah:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <!-- Accent and AppTheme setting -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Steel.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+    </mah:MetroWindow.Resources>
+    <Grid x:Name="MainGrid" Background="{StaticResource ControlBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Repositories" x:Name="currentRepoTab">
+                <Grid>
+                    <DataGrid x:Name="dg_Repositories" Margin="10" AutoGenerateColumns="False" Background="{x:Null}" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Path=Name}" ClipboardContentBinding="{x:Null}" Header="Name"/>
+                            <DataGridTextColumn Binding="{Binding Path=Description}" ClipboardContentBinding="{x:Null}" Header="Description" MaxWidth="300">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding Path=Owner.Name}" ClipboardContentBinding="{x:Null}" Header="Owner"/>
+                            <DataGridHyperlinkColumn Binding="{Binding HtmlUrl}" TargetName="{Binding HtmlUrl}" ContentBinding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="URL">
+                                <DataGridHyperlinkColumn.ElementStyle>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <EventSetter Event="Hyperlink.Click" Handler="OnHyperlinkCellClick" />
+                                    </Style>
+                                </DataGridHyperlinkColumn.ElementStyle>
+                            </DataGridHyperlinkColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Connections">
+                <Grid/>
+            </TabItem>
+            <TabItem Header="Settings">
+                <DockPanel >
+                    <Expander Header="Account" Height="304" VerticalAlignment="Top" IsExpanded="True">
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <DockPanel Grid.Column="0" LastChildFill="False" Margin="10">
+                                <mah:MetroHeader Header="User Name" Content="{Binding User.Name}" Height="60" VerticalAlignment="Top" DockPanel.Dock="Top"/>
+                                <mah:MetroHeader Header="Email Address" Content="{Binding User.Email}" Height="60" VerticalAlignment="Top" DockPanel.Dock="Top"/>
+                            </DockPanel>
+                            <DockPanel Grid.Column="1" LastChildFill="False" Margin="10">
+                                <Button x:Name="btn_SignInPanel" Height="50" VerticalAlignment="Top" Width="150" DockPanel.Dock="Top">
+                                    <DockPanel  LastChildFill="True" Width="127" >
+                                        <Image Height="32" Width="32" Source="/GitHubForDynamoWPF;component/Resources/Images/GitHub-Mark-Light-32px.png"/>
+                                        <TextBlock Text="SIGN IN" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+                                    </DockPanel>
+
+                                </Button>
+                            </DockPanel>
+                        </Grid>
+                    </Expander>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
+        <mah:MetroHeader Header="Current WorkSpace" Content="{Binding CurrentWorkSpaceName}" HorizontalAlignment="Left" Width="187" Margin="10,10,0,10"/>
+        <mah:Flyout x:Name="flyout_SignInPanel" Header="Sign In" HorizontalAlignment="Left" Height="469" Grid.RowSpan="3" VerticalAlignment="Top" Width="357" d:IsHidden="True">
+            <DockPanel Height="300" LastChildFill="False" Margin="10,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <TextBlock  TextWrapping="Wrap" Text="User Name" VerticalAlignment="Top" Width="250" DockPanel.Dock="Top" />
+                <TextBox x:Name="txtBox_UserName" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="250" DockPanel.Dock="Top"/>
+                <TextBlock  TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Width="250" DockPanel.Dock="Top" />
+                <PasswordBox x:Name="pwBox_Password"  VerticalAlignment="Top" Width="250" DockPanel.Dock="Top"/>
+                <mah:ProgressRing DockPanel.Dock="Top" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,50,0,0" Visibility="Hidden"/>
+                <Button x:Name="btn_SignIn" Content="Sign In" Height="50" VerticalAlignment="Top" Width="125" DockPanel.Dock="Bottom"/>
+            </DockPanel>
+        </mah:Flyout>
+
+    </Grid>
+</mah:MetroWindow>

@@ -11,10 +11,7 @@
   "keywords": [],
   "license": "MIT",
   "name": "GitHub for Dynamo",
-  "node_libraries": [
-    "GitHubForDynamo, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-    "GitHubForDynamoWPF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-  ],
+  "node_libraries": [],
   "repository_url": "",
   "site_url": "",
   "version": "0.0.1"
