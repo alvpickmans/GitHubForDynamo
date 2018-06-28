@@ -35,7 +35,7 @@ namespace GitHubForDynamo
         public void Loaded(ViewLoadedParams p)
         {
             DisposeWindow = false;
-            var mainViewModel = new GitHubForDynamoWPF.ViewModels.MainViewModel(p);
+            var mainViewModel = new GitHubForDynamoWPF.ViewModels.MainViewModel(p, p.DynamoWindow, UniqueId, Name);
             gitHubWindow = new GitHubForDynamoWPF.Views.MainView(mainViewModel)
             {
                 Title = this.Name,

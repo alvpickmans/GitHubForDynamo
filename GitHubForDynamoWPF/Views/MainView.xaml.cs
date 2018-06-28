@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using GitHubForDynamoWPF.ViewModels;
 using GitHubForDynamoWPF.Helpers;
+using GitHubForDynamoWPF.Interfaces;
 using System.Diagnostics;
 
 namespace GitHubForDynamoWPF.Views
@@ -21,7 +22,7 @@ namespace GitHubForDynamoWPF.Views
     /// <summary>
     /// Interaction logic for MainView.xaml
     /// </summary>
-    public partial class MainView : MetroWindow
+    public partial class MainView : MetroWindow, IPassword
     {
         private MainViewModel viewModel;
 
@@ -34,20 +35,25 @@ namespace GitHubForDynamoWPF.Views
 
             this.btn_SignInPanel.Click += (sender, args) =>
             {
-                this.flyout_SignInPanel.IsOpen = true;
+                this.flyout_SignInPanel.ToggleFlyout();
             };
 
             this.btn_SignIn.Click += (sender, args) =>
             {
-                viewModel.Client.SignIn(this.txtBox_UserName.Text, this.pwBox_Password.Password, viewModel);
-                this.flyout_SignInPanel.IsOpen = false;
+                viewModel.SignIn(sender, args, GetPassword());
             };
 
+            this.btn_OpenFile.Click += viewModel.OpenFile;
+
+        }
+
+        public string GetPassword()
+        {
+            return this.pwBox_Password.Password;
         }
 
         private void OnHyperlinkCellClick(object sender, RoutedEventArgs e)
         {
-            //e.Handled = true;
             var destination = ((Hyperlink)e.OriginalSource).NavigateUri;
             Process.Start(destination.ToString());
         }

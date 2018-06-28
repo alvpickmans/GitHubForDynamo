@@ -10,7 +10,7 @@
         x:Class="GitHubForDynamoWPF.Views.MainView"
         mc:Ignorable="d"
         IconScalingMode="ScaleDownLargerFrame"
-        Title="GitHub for Dynamo" Height="500" Width="800" MinHeight="500" MinWidth="800" Icon="/GitHubForDynamoWPF;component/Resources/Images/GitHub-Mark-Light-32px-Margin.png">
+        Title="GitHub for Dynamo" Height="409" Width="800" MinHeight="500" MinWidth="800" Icon="/GitHubForDynamoWPF;component/Resources/Images/GitHub-Mark-Light-32px-Margin.png">
     <mah:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -31,20 +31,21 @@
             <RowDefinition/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
+        <mah:MetroHeader Header="Current WorkSpace" Content="{Binding CurrentWorkSpaceName}" HorizontalAlignment="Left" Width="187" Margin="10,10,0,10"/>
         <TabControl Grid.Row="1">
             <TabItem Header="Repositories" x:Name="currentRepoTab">
                 <Grid>
                     <DataGrid x:Name="dg_Repositories" Margin="10" AutoGenerateColumns="False" Background="{x:Null}" >
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Path=Name}" ClipboardContentBinding="{x:Null}" Header="Name"/>
-                            <DataGridTextColumn Binding="{Binding Path=Description}" ClipboardContentBinding="{x:Null}" Header="Description" MaxWidth="300">
+                            <DataGridTextColumn Binding="{Binding Name}" ClipboardContentBinding="{x:Null}" Header="Name"/>
+                            <DataGridTextColumn Binding="{Binding Description}" ClipboardContentBinding="{x:Null}" Header="Description" MaxWidth="300">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style>
                                         <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Binding="{Binding Path=Owner.Name}" ClipboardContentBinding="{x:Null}" Header="Owner"/>
+                            <DataGridTextColumn Binding="{Binding Owner.Name}" ClipboardContentBinding="{x:Null}" Header="Owner"/>
                             <DataGridHyperlinkColumn Binding="{Binding HtmlUrl}" TargetName="{Binding HtmlUrl}" ContentBinding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="URL">
                                 <DataGridHyperlinkColumn.ElementStyle>
                                     <Style TargetType="{x:Type TextBlock}">
@@ -85,17 +86,20 @@
                 </DockPanel>
             </TabItem>
         </TabControl>
-        <mah:MetroHeader Header="Current WorkSpace" Content="{Binding CurrentWorkSpaceName}" HorizontalAlignment="Left" Width="187" Margin="10,10,0,10"/>
-        <mah:Flyout x:Name="flyout_SignInPanel" Header="Sign In" HorizontalAlignment="Left" Height="469" Grid.RowSpan="3" VerticalAlignment="Top" Width="357" d:IsHidden="True">
+        <mah:Flyout x:Name="flyout_SignInPanel" Header="Sign In" HorizontalAlignment="Left" Grid.RowSpan="3" Width="357" d:IsHidden="True">
             <DockPanel Height="300" LastChildFill="False" Margin="10,0" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <TextBlock  TextWrapping="Wrap" Text="User Name" VerticalAlignment="Top" Width="250" DockPanel.Dock="Top" />
-                <TextBox x:Name="txtBox_UserName" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="250" DockPanel.Dock="Top"/>
+                <TextBox x:Name="txtBox_UserName" TextWrapping="Wrap" Text="{Binding UserName}" VerticalAlignment="Top" Width="250" DockPanel.Dock="Top"/>
                 <TextBlock  TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Width="250" DockPanel.Dock="Top" />
-                <PasswordBox x:Name="pwBox_Password"  VerticalAlignment="Top" Width="250" DockPanel.Dock="Top"/>
-                <mah:ProgressRing DockPanel.Dock="Top" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,50,0,0" Visibility="Hidden"/>
+                <PasswordBox x:Name="pwBox_Password" VerticalAlignment="Top" Width="250" DockPanel.Dock="Top"/>
+
+
+                <TextBlock x:Name="txt_SignInStatus"  TextWrapping="Wrap" Text="{Binding LoginMessage}" DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,25,0,0" />
+                <mah:ProgressRing x:Name="progress_SignIn" DockPanel.Dock="Top" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,25,0,0" Visibility="Hidden"/>
                 <Button x:Name="btn_SignIn" Content="Sign In" Height="50" VerticalAlignment="Top" Width="125" DockPanel.Dock="Bottom"/>
             </DockPanel>
         </mah:Flyout>
+        <Button x:Name="btn_OpenFile" Content="Open file" HorizontalAlignment="Left" Margin="681,23,0,0" VerticalAlignment="Top" Width="75"/>
 
     </Grid>
 </mah:MetroWindow>

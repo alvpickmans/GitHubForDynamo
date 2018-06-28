@@ -62,7 +62,7 @@
       <HintPath>..\packages\DynamoVisualProgramming.Core.2.0.1.5055\lib\net45\DynamoApplications.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DynamoCore, Version=2.0.1.5055, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DynamoCore">
       <HintPath>..\packages\DynamoVisualProgramming.Core.2.0.1.5055\lib\net45\DynamoCore.dll</HintPath>
       <Private>False</Private>
     </Reference>
@@ -70,7 +70,7 @@
       <HintPath>..\packages\DynamoVisualProgramming.Tests.2.0.1.5055\lib\net45\DynamoCoreTests.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DynamoCoreWpf, Version=2.0.1.5055, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DynamoCoreWpf">
       <HintPath>..\packages\DynamoVisualProgramming.WpfUILibrary.2.0.1.5055\lib\net45\DynamoCoreWpf.dll</HintPath>
       <Private>False</Private>
     </Reference>

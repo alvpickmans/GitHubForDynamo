@@ -5,8 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 using System.Security;
+using System.Net;
 using Octokit;
 using GitHubForDynamoWPF.ViewModels;
+using GitHubForDynamoWPF.Attributes;
+using MahApps.Metro.Controls;
 
 namespace GitHubForDynamoWPF.Helpers
 {
@@ -73,20 +76,54 @@ namespace GitHubForDynamoWPF.Helpers
         } 
         #endregion
 
+        public static void ToggleFlyout(this Flyout flyout)
+        {
+            flyout.IsOpen = !flyout.IsOpen;
+        }
+
+        /// To use this extantion method, the enum need to have CustomEnumAttribute with CustomEnumAttribute(true)
+        public static string TextValue(this Enum myEnum)
+        {
+            string value = string.Empty;
+            /*Check : if the myEnum is a custom enum*/
+            var customEnumAttribute = (CustomEnumAttribute)myEnum
+                                      .GetType()
+                                      .GetCustomAttributes(typeof(CustomEnumAttribute), false)
+                                      .FirstOrDefault();
+
+            if (customEnumAttribute == null)
+            {
+                throw new Exception("The enum don't contain CustomEnumAttribute");
+            }
+            else if (customEnumAttribute.IsCustomEnum == false)
+            {
+                throw new Exception("The enum is not a custom enum");
+            }
+
+            /*Get the TextValueAttribute*/
+            var textValueAttribute = (TextValueAttribute)myEnum
+                                         .GetType().GetMember(myEnum.ToString()).Single()
+                                         .GetCustomAttributes(typeof(TextValueAttribute), false)
+                                         .FirstOrDefault();
+            value = (textValueAttribute != null) ? textValueAttribute.Value : string.Empty;
+            return value;
+        }
+
         #region GitHub API
-        public async static void SetCurrentUser(this GitHubClient client, MainViewModel viewModel)
+        public async static Task<HttpStatusCode> SetCurrentUser(this GitHubClient client, MainViewModel viewModel)
         {
             try
             {
                 viewModel.User = await client.User.Current();
+                return HttpStatusCode.OK;
             }
-            catch (Exception e)
+            catch (AuthorizationException e)
             {
-                throw new Exception(e.Message);
+                return e.HttpResponse.StatusCode;
             }
         }
 
-        public async static void GetAllRepositories(this GitHubClient client, MainViewModel viewModel)
+        public async static Task GetAllRepositories(this GitHubClient client, MainViewModel viewModel)
         {
             // Clear collection
             viewModel.UserRepositories.Clear();
@@ -97,17 +134,6 @@ namespace GitHubForDynamoWPF.Helpers
             {
                 viewModel.UserRepositories.Add(repo);
             }
-        }
-
-        public static void SignIn(this GitHubClient client, string user, string password, MainViewModel viewModel)
-        {
-            ConfigurationManager.AppSettings.Set("User", user);
-            ConfigurationManager.AppSettings.Set("Password", password.ToSecureString().EncryptString());
-
-            client.Credentials = new Credentials(user, password, AuthenticationType.Basic);
-            client.SetCurrentUser(viewModel);
-            client.GetAllRepositories(viewModel);
-            
         }
 
         #endregion
