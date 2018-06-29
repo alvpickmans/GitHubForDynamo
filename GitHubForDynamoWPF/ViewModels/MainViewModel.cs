@@ -35,7 +35,7 @@ namespace GitHubForDynamoWPF.ViewModels
         Unlogged
     }
 
-    public class MainViewModel : NotificationObject, IDisposable
+    public partial class MainViewModel : NotificationObject, IDisposable
     {
         #region Private Properties
         private ReadyParams readyParams;
