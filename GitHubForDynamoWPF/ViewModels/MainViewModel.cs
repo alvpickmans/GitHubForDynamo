@@ -213,18 +213,14 @@ namespace GitHubForDynamoWPF.ViewModels
             if(dialog.ShowDialog() == DialogResult.OK)
             {
                 string file = dialog.FileName;
-                //if (dynamoVM.CurrentSpace.HasUnsavedChanges)
-                //{
-                //    var saveConfirm = System.Windows.MessageBox.Show("Do you want to save changes?", extensionName, MessageBoxButton.YesNo);
-                //    if (saveConfirm == MessageBoxResult.Yes)
-                //    {
-                        
-                //    }
-                //}
-                //dynamoVM.Model.RemoveWorkspace(dynamoVM.CurrentSpace);
-                //readyParams.CommandExecutive.ExecuteCommand(new Dynamo.Models.DynamoModel.OpenFileCommand(file), uniqueId, extensionName);
-                dynamoVM.Model.OpenFileFromPath(file);
-                dynamoVM.ShowStartPage = false;
+                dynamoVM.CloseHomeWorkspaceCommand.Execute(true);
+
+                // After closing the current space, Dynamo sets it to be HomeSpace so if the 
+                // below doesn't comply, something went wrong
+                if(dynamoVM.CurrentSpace == dynamoVM.HomeSpace && !dynamoVM.HomeSpace.HasUnsavedChanges)
+                {
+                    dynamoVM.OpenCommand.Execute(file);
+                }
             }
         }
         #endregion
