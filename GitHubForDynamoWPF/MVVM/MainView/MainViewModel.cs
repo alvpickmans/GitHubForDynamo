@@ -17,6 +17,7 @@ using Octokit;
 using GitHubForDynamoWPF.Helpers;
 using GitHubForDynamoWPF.Attributes;
 using System.Windows.Forms;
+using System.Net;
 
 namespace GitHubForDynamoWPF.ViewModels
 {
@@ -29,6 +30,10 @@ namespace GitHubForDynamoWPF.ViewModels
         Completed,
         [TextValue("Something went wrong :(")]
         Failed,
+        [TextValue("Couldn't connect to GitHub api. Check your internet connection and try again.")]
+        ConnectionFailed,
+        [TextValue("Connection took too long, Check your internet connection and try again.")]
+        Timeout,
         [TextValue("Logged")]
         Logged,
         [TextValue("Bye bye!")]
@@ -147,6 +152,7 @@ namespace GitHubForDynamoWPF.ViewModels
             extensionName = extName;
             this.owner = owner;
             this.dynamoVM = this.owner.DataContext as DynamoViewModel;
+            InitializeDelegateCommands();
             client = new GitHubClient(new ProductHeaderValue("github-for-dynamo"));
             client.SetRequestTimeout(new TimeSpan(0, 0, 10));
 
@@ -185,17 +191,24 @@ namespace GitHubForDynamoWPF.ViewModels
             ConfigurationManager.AppSettings.Set("Password", password.ToSecureString().EncryptString());
 
             client.Credentials = new Credentials(UserName, password, AuthenticationType.Basic);
-            System.Net.HttpStatusCode result = await client.SetCurrentUser(this);
-            if (result == System.Net.HttpStatusCode.Unauthorized)
+            try
             {
-                LogStatus = LogStatus.Failed;
+                System.Net.HttpStatusCode result = await client.SetCurrentUser(this);
+                if (result == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    LogStatus = LogStatus.Failed;
+                }
+                else
+                {
+                    LogStatus = LogStatus.Completed;
+                    await client.GetAllRepositories(this);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                LogStatus = LogStatus.Completed;
-                await client.GetAllRepositories(this);
+                if(ex is WebException) { LogStatus = LogStatus.ConnectionFailed; }
+                else if(ex is TaskCanceledException) { LogStatus = LogStatus.Timeout; }
             }
-
             await Task.Delay(2000).ContinueWith(t =>
             {
                 LoginMessage = String.Empty;

@@ -10,6 +10,7 @@
         x:Class="GitHubForDynamoWPF.Views.MainView"
         mc:Ignorable="d"
         IconScalingMode="ScaleDownLargerFrame"
+        EnableDWMDropShadow="True"
         Title="GitHub for Dynamo" Height="409" Width="800" MinHeight="500" MinWidth="800" Icon="/GitHubForDynamoWPF;component/Resources/Images/GitHub-Mark-Light-32px-Margin.png">
     <mah:MetroWindow.Resources>
         <ResourceDictionary>
@@ -29,12 +30,21 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition/>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <mah:MetroHeader Header="Current WorkSpace" Content="{Binding CurrentWorkSpaceName}" HorizontalAlignment="Left" Width="187" Margin="10,10,0,10"/>
         <TabControl Grid.Row="1">
             <TabItem Header="Repositories" x:Name="currentRepoTab">
                 <Grid>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Projects">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
                     <DataGrid x:Name="dg_Repositories" Margin="10" AutoGenerateColumns="False" Background="{x:Null}" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Name}" ClipboardContentBinding="{x:Null}" Header="Name"/>
@@ -45,7 +55,6 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Binding="{Binding Owner.Name}" ClipboardContentBinding="{x:Null}" Header="Owner"/>
                             <DataGridHyperlinkColumn Binding="{Binding HtmlUrl}" TargetName="{Binding HtmlUrl}" ContentBinding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="URL">
                                 <DataGridHyperlinkColumn.ElementStyle>
                                     <Style TargetType="{x:Type TextBlock}">
@@ -55,10 +64,17 @@
                             </DataGridHyperlinkColumn>
                         </DataGrid.Columns>
                     </DataGrid>
+                    <DockPanel LastChildFill="False" HorizontalAlignment="Right" Margin="0,10,10,10" Grid.Row="1" Width="766">
+                        <Button Content="New" VerticalAlignment="Top" Width="75" Margin="10,0"
+                                Command="{Binding Path=ToggleFlyOutCommand}"
+                                CommandParameter="{Binding ElementName=flyout_Project}"/>
+                        <Button Content="Add" VerticalAlignment="Top" Width="75" Margin="10,0"
+                                Command="{Binding Path=ToggleFlyOutCommand}"
+                                CommandParameter="{Binding ElementName=flyout_Project}"/>
+                        <Button Content="Clone" VerticalAlignment="Top" Width="75" Margin="10,0"/>
+                    </DockPanel>
+                    <DockPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="393,0" Grid.Row="1"></DockPanel>
                 </Grid>
-            </TabItem>
-            <TabItem Header="Connections">
-                <Grid/>
             </TabItem>
             <TabItem Header="Settings">
                 <DockPanel >
@@ -86,7 +102,7 @@
                 </DockPanel>
             </TabItem>
         </TabControl>
-        <mah:Flyout x:Name="flyout_SignInPanel" Header="Sign In" HorizontalAlignment="Left" Grid.RowSpan="3" Width="357" d:IsHidden="True">
+        <mah:Flyout x:Name="flyout_SignInPanel" Header="Sign In" HorizontalAlignment="Left" Grid.RowSpan="3" Width="350" d:IsHidden="True">
             <DockPanel Height="300" LastChildFill="False" Margin="10,0" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <TextBlock  TextWrapping="Wrap" Text="User Name" VerticalAlignment="Top" Width="250" DockPanel.Dock="Top" />
                 <TextBox x:Name="txtBox_UserName" TextWrapping="Wrap" Text="{Binding UserName}" VerticalAlignment="Top" Width="250" DockPanel.Dock="Top"/>
@@ -94,12 +110,24 @@
                 <PasswordBox x:Name="pwBox_Password" VerticalAlignment="Top" Width="250" DockPanel.Dock="Top"/>
 
 
-                <TextBlock x:Name="txt_SignInStatus"  TextWrapping="Wrap" Text="{Binding LoginMessage}" DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,25,0,0" />
+                <TextBlock x:Name="txt_SignInStatus"  TextWrapping="Wrap" Text="{Binding LoginMessage}" DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,25,10,10" />
                 <mah:ProgressRing x:Name="progress_SignIn" DockPanel.Dock="Top" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,25,0,0" Visibility="Hidden"/>
                 <Button x:Name="btn_SignIn" Content="Sign In" Height="50" VerticalAlignment="Top" Width="125" DockPanel.Dock="Bottom"/>
             </DockPanel>
         </mah:Flyout>
-        <Button x:Name="btn_OpenFile" Content="Open file" HorizontalAlignment="Left" Margin="681,23,0,0" VerticalAlignment="Top" Width="75"/>
+        <mah:Flyout x:Name="flyout_Project" Header="Sign In" HorizontalAlignment="Left" Grid.RowSpan="3" Width="350" d:IsHidden="True">
+            <DockPanel Height="300" LastChildFill="False" Margin="15,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <DockPanel DockPanel.Dock="Top" Height="60px">
+                    <TextBlock Text="Select Folder" DockPanel.Dock="Top"/>
+                    <Button MaxHeight="30px" Content="..." DockPanel.Dock="Right"></Button>
+                    <TextBox Name="txt_AddExistingProjectPath" MaxHeight="30px" Width="300" DockPanel.Dock="Right" Background="{StaticResource AccentColorBrush4}"/>
+
+                </DockPanel>
+                <Button DockPanel.Dock="Bottom" Width="200" Content="Add Existing Project"
+                        Command="{Binding Path=AddExistingProjectCommand}"
+                        CommandParameter="{Binding Text, ElementName=txt_AddExistingProjectPath}"/>
+            </DockPanel>
+        </mah:Flyout>
 
     </Grid>
 </mah:MetroWindow>

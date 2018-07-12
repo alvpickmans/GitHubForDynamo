@@ -168,7 +168,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Manifests\pkg.json" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Manifests\GitHubForDynamo_ViewExtensionDefinition.xml" />
@@ -188,11 +190,13 @@
       <XMLExtensions Include="$(ProjectDir)Manifests\*ExtensionDefinition.xml" />
       <PackageJson Include="$(ProjectDir)Manifests\pkg.json" />
       <Configs Include="$(OutDir)*.config" />
+      <SourcePackage Include="$(OutDir)\**\*" />
     </ItemGroup>
-    <Copy SourceFiles="@(Dlls)" DestinationFolder="$(ProjectDir)\packages\$(SolutionName)\bin\" />
+    <!--<Copy SourceFiles="@(Dlls)" DestinationFolder="$(ProjectDir)\packages\$(SolutionName)\bin\" />
     <Copy SourceFiles="@(Pdbs)" DestinationFolder="$(ProjectDir)\packages\$(SolutionName)\bin\" />
     <Copy SourceFiles="@(Xmls)" DestinationFolder="$(ProjectDir)\packages\$(SolutionName)\bin\" />
-    <Copy SourceFiles="@(Configs)" DestinationFolder="$(ProjectDir)\packages\$(SolutionName)\bin\" />
+    <Copy SourceFiles="@(Configs)" DestinationFolder="$(ProjectDir)\packages\$(SolutionName)\bin\" />-->
+    <Copy SourceFiles="@(SourcePackage)" DestinationFolder="$(ProjectDir)\packages\$(SolutionName)\bin\\%(RecursiveDir)" />
     <Copy SourceFiles="@(XMLExtensions)" DestinationFolder="$(ProjectDir)\packages\$(SolutionName)\extra\" />
     <Copy SourceFiles="@(PackageJson)" DestinationFolder="$(ProjectDir)\packages\$(SolutionName)\" />
     <CallTarget Condition="'$(Configuration)' == 'Debug'" Targets="PackageDeploy" />

@@ -176,11 +176,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MVVM\MainView\MainViewModelCommand.cs" />
     <Compile Include="Helpers\CustomAttributes.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Interfaces\IPassword.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="Views\MainView.xaml.cs">
+    <Compile Include="MVVM\MainView\MainViewModel.cs" />
+    <Compile Include="MVVM\MainView\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -217,7 +218,7 @@
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
-    <Page Include="Views\MainView.xaml">
+    <Page Include="MVVM\MainView\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -225,6 +226,7 @@
   <ItemGroup>
     <Resource Include="Resources\Images\GitHub-Mark-Light-32px-Margin.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

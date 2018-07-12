@@ -43,7 +43,7 @@ namespace GitHubForDynamoWPF.Views
                 viewModel.SignIn(sender, args, GetPassword());
             };
 
-            this.btn_OpenFile.Click += viewModel.OpenFile;
+            //this.btn_OpenFile.Click += viewModel.OpenFile;
 
         }
 
